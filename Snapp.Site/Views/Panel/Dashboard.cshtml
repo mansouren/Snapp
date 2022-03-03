@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "اسنپ تاکسی";
+    Layout = "~/Views/Shared/_SiteLayOut.cshtml";
+}
+
+<div id="map"></div>
+@*BootStrap4 Modal Classes*@
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bodyModal">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section mysection{
+
+    <link href="~/leafletmap/leaflet.css" rel="stylesheet" />
+    <script src="~/leafletmap/leaflet.js"></script>
+    <script>
+        //تابع تبدیل عدد به رادیان که در محاسبه مختصات کاربرد دارد
+        function ConvertNumericToRad(Value) {
+            return Value * Math.PI / 180;
+        }
+
+        var lat1;
+        var lng1;
+
+        var lat2;
+        var lng2;
+
+        var R = 6371; //عدد ثابت در ماحسبه فاصله بین مبدا و مقصد به کیلومتر
+        //تابع مارکر مبدا
+        function myLocation(e) {
+            L.marker(
+                e.latlng,
+                {
+                    icon: firstIcon,
+                    draggable : true
+                }
+            ).addTo(map);
+            lat1 = e.latlng.lat;//عرض جغرافیایی
+            lng1 = e.latlng.lng;//طول جغرافیایی
+            
+        }
+
+        //تابع کلیک و مختصات
+        function myClick(e) {
+            L.marker(
+                e.latlng,
+                {
+                    icon: secondIcon
+                    
+                }
+            ).addTo(map);
+            lat2 = e.latlng.lat;
+            lng2 = e.latlng.lng;
+
+            //محاسبه مسافت بین مبدا و مقصد به کیلومتر بعد از انتخاب مقصد توسط کاربر
+            var myLat = ConvertNumericToRad(lat2 - lat1);
+            var myLng = ConvertNumericToRad(lng2 - lng1);
+
+            var fLat1 = ConvertNumericToRad(lat1);
+            var fLat2 = ConvertNumericToRad(lat2);
+
+            var a = Math.sin(myLat / 2) * Math.sin(myLat / 2) +
+                Math.sin(myLng / 2) * Math.sin(myLng / 2) * Math.cos(fLat1) * Math.cos(fLat2);
+
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+
+            //پاس دادن d که همان مسافت به کیلومتر است به متدConfirmRequest در کنترلر
+            $.ajax({
+                url: "/Panel/ConfirmRequest/" + d,
+                type: "Get",
+                data: {}
+            }).done(function (result) {
+                $('#myModal').modal('show');
+                $('#bodyModal').html(result);
+            });
+        }
+
+      
+            
+        
+
+        //تنظیمات آیکون
+        var iconSettings = L.Icon.extend({
+            Option: {
+                iconSize: [50, 50],
+                iconArchor: [20, 35]
+            }
+        })
+        var firstIcon = new iconSettings({ iconUrl: '/images/001.png' });
+        var secondIcon = new iconSettings({ iconUrl: '/images/002.png'})
+
+        //نمایش ساده نقشه
+        var map = L.map('map').setView([32.200, 52.800], 8);
+        L.tileLayer('https://a.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        //محاسبه جایگاه مبدا
+        map.locate({ setView: true, maxZoom: 16 });
+        map.on('locationfound', myLocation);
+
+        //جایگاه مقصد با کلیک
+        map.on('click', myClick);
+    </script>
+
+}
+
+
+

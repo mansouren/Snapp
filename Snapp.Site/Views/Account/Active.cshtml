@@ -1,0 +1,34 @@
+﻿@model Snapp.Core.ViewModels.ActivateviewModel
+
+@{
+    ViewData["Title"] = "Active";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<h3 class="text-center">فعالسازی حساب کاربری</h3>
+<br />
+<h5 class="text-center">کد فعالسازی برای شما پیامک خواهد شد</h5>
+<hr />
+
+<form asp-action="Active">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Code" class="control-label"></label>
+        <input asp-for="Code" class="form-control" placeholder="مثل 123456" />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="تایید و ادامه" class="btn btn-success" />
+    </div>
+</form>
+
+@if (ViewBag.HasError == true)
+{
+    <script src="~/js/sweet.js"></script>
+    <script>
+
+        swal("اخطار", "کد فعالسازی اشتباه وارد شده است", "warning", {
+            button: "متوجه شدم",
+        });
+    </script>
+}

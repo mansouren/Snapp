@@ -1,0 +1,26 @@
+﻿@model Snapp.Core.ViewModels.Profile.FactorViewModel
+
+@{
+    ViewData["Title"] = "شارژ کیف پول";
+    Layout = "~/Views/Shared/_SiteLayOut.cshtml";
+}
+<h1 class="text-center">افزایش اعتبار</h1>
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <form asp-action="Payment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <img src="~/images/Payment.png" class="img-fluid" style="margin:auto;" alt="افزایش اعتبار" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Wallet" class="form-control" min="0" placeholder="مبلغ به ریال" />
+                <span asp-validation-for="Wallet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ذخیره تغییرات" class="btn btn-success btn-block" />
+            </div>
+        </form>
+    </div>
+</div>
+

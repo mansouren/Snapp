@@ -1,0 +1,24 @@
+﻿@model Snapp.Core.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Driver";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+
+<h3 class="text-center">راننده گرامی خوش آمدید</h3>
+<br />
+<h5 class="text-center">کد فعالسازی برای شما پیامک خواهد شد</h5>
+<hr />
+
+<form asp-action="Driver">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="UserName" class="control-label"></label>
+        <input asp-for="UserName" class="form-control" placeholder="مثل 09354022308" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="ارسال کد فعالسازی" class="btn btn-success" />
+    </div>
+</form>

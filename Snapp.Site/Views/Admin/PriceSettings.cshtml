@@ -1,0 +1,51 @@
+﻿@model Snapp.Core.ViewModels.Admin.PriceSettingViewModel
+
+@{
+    ViewData["Title"] = "تنظیمات هزینه ها";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="card">
+            <div class="header">
+                <h4 class="title pull-right">ثبت تنظیمات</h4>
+                <h4 class="title pull-left">
+                    <a href="/Admin/Index" class="btn btn-danger">
+                        بازگشت
+                    </a>
+                </h4>
+            </div>
+            <div class="clearfix"></div>
+            <div class="content">
+                <form asp-action="PriceSettings">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label style="margin-left:20px;">@Html.DisplayNameFor(model => model.ConsiderWeatherForPrice)</label>
+                        
+                        <input type="checkbox" asp-for="ConsiderWeatherForPrice" />
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-left:20px;">@Html.DisplayNameFor(model => model.ConsiderDistanceForPrice)</label>
+                        <input type="checkbox" asp-for="ConsiderDistanceForPrice" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="ذخیره و بازگشت" class="btn btn-info btn-fill" />
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.IsSuccess == true)
+{
+    <script src="~/js/sweet.js"></script>
+    <script>
+        swal("پیغام", "تغییرات با موفقیت انجام شد", "success", { button: "متوجه شدم" });
+    </script>
+
+}
+
